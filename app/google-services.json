@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "958978788576",
+    "project_id": "litera-ebc48",
+    "storage_bucket": "litera-ebc48.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958978788576:android:1c99b226912d8cd7f7d485",
+        "android_client_info": {
+          "package_name": "com.example.litera"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmnRr2ByqxsSLpqwOuO0H-WRXiaKUSIgo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

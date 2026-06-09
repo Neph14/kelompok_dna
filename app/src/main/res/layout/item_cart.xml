@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="#F5F5F5">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Cover Buku -->
+        <ImageView
+            android:id="@+id/ivCoverCart"
+            android:layout_width="75dp"
+            android:layout_height="105dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder_buku" />
+
+        <!-- Detail Informasi Buku -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ivCoverCart"
+            android:layout_toStartOf="@id/btnDeleteCart"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvJudulCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Statistika dan Probabilitas"
+                android:textColor="#222222"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tvPenulisCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dr. Boediono"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <!-- Status Tersedia Ijo sesuai Figma -->
+            <TextView
+                android:id="@+id/tvStatusCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✔ Tersedia"
+                android:textColor="#2E7D32"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"/>
+        </LinearLayout>
+
+        <!-- Tombol Icon Hapus Merah -->
+        <ImageButton
+            android:id="@+id/btnDeleteCart"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="#D32F2F" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

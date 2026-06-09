@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CircleImageView">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Theme.Litera" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#F37321</item>
+        <item name="android:statusBarColor">#F37321</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="CustomTabTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Theme.Litera.WhiteStatusBar" parent="Theme.Litera">
+        <item name="android:statusBarColor">#FFFFFF</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
