@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Litera Admin Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js untuk Grafik -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome untuk Icon Sidebar mirip referensi -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              litera: "#EA6113",
+              "litera-dark": "#C84F0E",
+              "litera-light": "#FFF3EB",
+              "bg-purple-admin": "#F2F4F9",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .sidebar-link.active {
+        color: #ea6113;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="bg-bg-purple-admin font-sans antialiased text-gray-800">
+    <!-- Top Navbar -->
+    <header
+      class="w-full h-16 bg-white flex items-center justify-between px-6 fixed top-0 z-40 border-b border-gray-200"
+    >
+      <div class="flex items-center space-x-3">
+        <i class="fa-solid fa-book-open text-2xl text-litera"></i>
+        <span class="text-xl font-black text-litera tracking-wider"
+          >LITERA</span
+        >
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2">
+          <img
+            src="https://ui-avatars.com/api/?name=Admin+Litera&background=EA6113&color=fff"
+            class="w-9 h-9 rounded-full"
+            alt="Profile"
+          />
+          <span class="text-sm font-semibold text-gray-700">Admin Litera</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex pt-16 min-h-screen">
+      <!-- Sidebar Kiri -->
+      <aside
+        class="w-64 bg-white fixed h-full left-0 border-r border-gray-200 p-5 z-30"
+      >
+        <div
+          class="mb-6 flex items-center space-x-3 p-2 bg-litera-light rounded-xl"
+        >
+          <img
+            src="https://ui-avatars.com/api/?name=AL&background=EA6113&color=fff"
+            class="w-10 h-10 rounded-full"
+            alt="Avatar"
+          />
+          <div>
+            <h4 class="text-sm font-bold text-gray-800">Admin Utama</h4>
+            <p class="text-xs text-gray-500">Project Manager</p>
+          </div>
+        </div>
+
+        <!-- Menu Navigasi Sesuai Request -->
+        <nav class="space-y-1">
+          <button
+            onclick="switchPage('dashboard')"
+            id="menu-dashboard"
+            class="sidebar-link active w-full flex items-center space-x-3 px-4 py-3 text-sm rounded-lg hover:bg-gray-50 transition text-gray-600"
+          >
+            <i class="fa-solid fa-gauge w-5 text-center"></i>
+            <span>Dashboard</span>
+          </button>
+          <button
+            onclick="switchPage('buku')"
+            id="menu-buku"
+            class="sidebar-link w-full flex items-center space-x-3 px-4 py-3 text-sm rounded-lg hover:bg-gray-50 transition text-gray-600"
+          >
+            <i class="fa-solid fa-book w-5 text-center"></i>
+            <span>List Buku</span>
+          </button>
+          <button
+            onclick="switchPage('mahasiswa')"
+            id="menu-mahasiswa"
+            class="sidebar-link w-full flex items-center space-x-3 px-4 py-3 text-sm rounded-lg hover:bg-gray-50 transition text-gray-600"
+          >
+            <i class="fa-solid fa-users w-5 text-center"></i>
+            <span>List Mahasiswa</span>
+          </button>
+          <button
+            onclick="switchPage('peminjaman')"
+            id="menu-peminjaman"
+            class="sidebar-link w-full flex items-center space-x-3 px-4 py-3 text-sm rounded-lg hover:bg-gray-50 transition text-gray-600"
+          >
+            <i
+              class="fa-solid fa-hand-holding-breast w-5 text-center"
+              style="transform: rotate(180deg)"
+            ></i>
+            <span>List Peminjaman</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Konten Utama (Kanan) -->
+      <main class="flex-1 ml-64 p-8">
+        <!-- ================= HALAMAN DASHBOARD ================= -->
+        <section id="page-dashboard" class="space-y-8">
+          <div class="flex items-center justify-between">
+            <h2
+              class="text-xl font-bold flex items-center space-x-2 text-gray-700"
+            >
+              <span class="p-2 bg-litera text-white rounded-lg"
+                ><i class="fa-solid fa-house text-sm"></i
+              ></span>
+              <span>Dashboard Overview</span>
+            </h2>
+          </div>
+
+          <!-- 3 Kotak Summary Card (Sesuai Layout purple_admin_vue.jpg) -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Kotak 1: Total 1 Tahun -->
+            <div
+              class="rounded-xl p-6 text-white shadow-md bg-gradient-to-r from-orange-400 to-red-500 relative overflow-hidden"
+            >
+              <h3
+                class="text-sm font-medium opacity-80 uppercase tracking-wider"
+              >
+                Peminjaman (1 Tahun Ini)
+              </h3>
+              <p id="txt-total-tahun" class="text-3xl font-bold mt-2">0 Buku</p>
+              <p class="text-xs opacity-75 mt-4">
+                Total akumulasi grafik 12 bulan
+              </p>
+              <i
+                class="fa-solid fa-chart-line text-6xl opacity-10 absolute -right-4 -bottom-2"
+              ></i>
+            </div>
+            <!-- Kotak 2: Total 1 Bulan -->
+            <div
+              class="rounded-xl p-6 text-white shadow-md bg-gradient-to-r from-blue-400 to-indigo-500 relative overflow-hidden"
+            >
+              <h3
+                class="text-sm font-medium opacity-80 uppercase tracking-wider"
+              >
+                Peminjaman (Bulan Ini)
+              </h3>
+              <p id="txt-total-bulan" class="text-3xl font-bold mt-2">0 Buku</p>
+              <p class="text-xs opacity-75 mt-4">Statistik bulan berjalan</p>
+              <i
+                class="fa-solid fa-calendar-check text-6xl opacity-10 absolute -right-4 -bottom-2"
+              ></i>
+            </div>
+            <!-- Kotak 3: Total Menunggu Konfirmasi -->
+            <div
+              class="rounded-xl p-6 text-white shadow-md bg-gradient-to-r from-emerald-400 to-teal-500 relative overflow-hidden"
+            >
+              <h3
+                class="text-sm font-medium opacity-80 uppercase tracking-wider"
+              >
+                Butuh Konfirmasi
+              </h3>
+              <p id="txt-total-konfirmasi" class="text-3xl font-bold mt-2">
+                0 Request
+              </p>
+              <p class="text-xs opacity-75 mt-4">Harus segera diproses</p>
+              <i
+                class="fa-solid fa-clock text-6xl opacity-10 absolute -right-4 -bottom-2"
+              ></i>
+            </div>
+          </div>
+
+          <!-- Section Grafik Sesuai Tata Letak purple_admin_vue.jpg -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Bar Chart (Lebar 2 Kolom) -->
+            <div
+              class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100"
+            >
+              <h3 class="text-base font-bold text-gray-700 mb-4">
+                Statistik Peminjaman Buku (12 Bulan)
+              </h3>
+              <div class="h-72">
+                <canvas id="chartBatang"></canvas>
+              </div>
+            </div>
+            <!-- Pie Chart (Lebar 1 Kolom) -->
+            <div
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-100"
+            >
+              <h3 class="text-base font-bold text-gray-700 mb-4">
+                Perbandingan Prodi Peminjam
+              </h3>
+              <div class="h-72 flex justify-center items-center">
+                <canvas id="chartDonat"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= HALAMAN LIST BUKU ================= -->
+        <section id="page-buku" class="hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <h2 class="text-xl font-bold text-gray-700">
+                <i class="fa-solid fa-book text-litera mr-2"></i> Koleksi Buku
+                Perpustakaan
+              </h2>
+              <span
+                id="badge-total-buku"
+                class="bg-litera-light text-litera text-xs font-bold px-3 py-1 rounded-full border border-orange-200"
+              >
+                0 Judul Buku
+              </span>
+            </div>
+            <button
+              onclick="openBukuModal()"
+              class="bg-litera hover:bg-litera-dark text-white text-sm font-bold px-4 py-2 rounded-xl shadow-sm transition flex items-center space-x-2"
+            >
+              <i class="fa-solid fa-plus"></i> <span>Tambah Buku</span>
+            </button>
+          </div>
+
+          <div
+            id="grid-buku"
+            class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6"
+          ></div>
+        </section>
+
+        <div
+          id="modal-buku"
+          class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300"
+        >
+          <div
+            class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300 p-6 space-y-4"
+          >
+            <div
+              class="flex justify-between items-center border-b border-gray-100 pb-3"
+            >
+              <h3 id="modal-buku-title" class="text-lg font-bold text-gray-800">
+                Tambah Koleksi Buku
+              </h3>
+              <button
+                onclick="closeBukuModal()"
+                class="text-gray-400 hover:text-gray-600"
+              >
+                <i class="fa-solid fa-xmark text-lg"></i>
+              </button>
+            </div>
+
+            <form id="form-buku" class="space-y-3 text-sm">
+              <input type="hidden" id="input-buku-id" />
+              <div>
+                <label class="block text-gray-600 font-medium mb-1"
+                  >Judul Buku</label
+                >
+                <input
+                  type="text"
+                  id="input-buku-judul"
+                  required
+                  class="w-full border border-gray-200 rounded-lg p-2.5 focus:outline-none focus:border-litera"
+                  placeholder="Contoh: Analisis Perancangan Sistem Informasi"
+                />
+              </div>
+              <div>
+                <label class="block text-gray-600 font-medium mb-1"
+                  >Penulis / Pengarang</label
+                >
+                <input
+                  type="text"
+                  id="input-buku-penulis"
+                  required
+                  class="w-full border border-gray-200 rounded-lg p-2.5 focus:outline-none focus:border-litera"
+                  placeholder="Contoh: Prof. Dr. John Doe"
+                />
+              </div>
+              <div>
+                <label class="block text-gray-600 font-medium mb-1"
+                  >Kategori</label
+                >
+                <input
+                  type="text"
+                  id="input-buku-kategori"
+                  required
+                  class="w-full border border-gray-200 rounded-lg p-2.5 focus:outline-none focus:border-litera"
+                  placeholder="Contoh: SI, Novel, Sains, Religi"
+                />
+              </div>
+              <div>
+                <label class="block text-gray-600 font-medium mb-1"
+                  >URL Cover Gambar (Gunakan Link Internet)</label
+                >
+                <input
+                  type="url"
+                  id="input-buku-url"
+                  required
+                  class="w-full border border-gray-200 rounded-lg p-2.5 focus:outline-none focus:border-litera"
+                  placeholder="https://images.unsplash.com/... atau link gambar Google"
+                />
+              </div>
+
+              <div
+                class="flex justify-end space-x-2 pt-3 border-t border-gray-100"
+              >
+                <button
+                  type="button"
+                  onclick="closeBukuModal()"
+                  class="px-4 py-2 border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50 transition"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  class="px-4 py-2 bg-litera hover:bg-litera-dark text-white font-bold rounded-lg transition"
+                >
+                  Simpan Buku
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- ================= HALAMAN LIST MAHASISWA ================= -->
+        <section id="page-mahasiswa" class="hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xl font-bold text-gray-700">
+              <i class="fa-solid fa-users text-litera mr-2"></i> Data Mahasiswa
+              Terdaftar
+            </h2>
+            <span
+              id="badge-total-mahasiswa"
+              class="bg-litera-light text-litera text-xs font-bold px-3 py-1 rounded-full border border-orange-200"
+            >
+              0 Mahasiswa
+            </span>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Nama Lengkap
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      NPM
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Fakultas
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Program Studi
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Status Akun
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="tabel-mahasiswa"
+                  class="bg-white divide-y divide-gray-200"
+                >
+                  <!-- Data dari koleksi 'users' akan di-inject ke sini -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= HALAMAN LIST PEMINJAMAN ================= -->
+        <section id="page-peminjaman" class="hidden space-y-6">
+          <h2 class="text-xl font-bold text-gray-700">
+            <i class="fa-solid fa-list-check text-litera mr-2"></i> Log &
+            Validasi Peminjaman
+          </h2>
+
+          <div
+            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <div class="p-5 border-b border-gray-200 bg-gray-50">
+              <h3 class="font-bold text-gray-700">Daftar Pengajuan Masuk</h3>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Mahasiswa
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Buku Dipinjam
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Tgl Pengajuan
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase"
+                    >
+                      Aksi
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="tabel-peminjaman"
+                  class="bg-white divide-y divide-gray-200"
+                >
+                  <!-- Data Firestore di-inject ke sini -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Firebase & Logika SPA -->
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
