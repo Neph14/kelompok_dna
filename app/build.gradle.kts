@@ -8,13 +8,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.litera"
+    namespace = "com.dna.litera"
 
-    // CARA PALING STABIL & STANDAR DI KOTLIN DSL:
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.litera"
+        applicationId = "com.dna.litera"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

@@ -8,7 +8,7 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.example.litera" />
+                  <option name="appId" value="com.dna.litera" />
                   <option name="mobileSdkAppId" value="1:958978788576:android:1c99b226912d8cd7f7d485" />
                   <option name="projectId" value="litera-ebc48" />
                   <option name="projectNumber" value="958978788576" />
