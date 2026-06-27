@@ -25,13 +25,23 @@
             app:tint="#000000" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Filter Kategori"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#2D3E50"
             android:layout_marginStart="24dp" />
+
+        <ImageButton
+            android:id="@+id/btnApplyFilter"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@android:drawable/checkbox_on_background"
+            android:background="@drawable/bg_button_back"
+            android:visibility="gone"
+            app:tint="#F37321" />
     </LinearLayout>
 
     <!-- Category List -->

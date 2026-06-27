@@ -30,6 +30,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private lateinit var resultAdapter: BukuVertikalAdapter
     private lateinit var historyAdapter: HistorySearchAdapter
     private var searchHistory = mutableListOf<String>()
+    private var isFilteringByCategory = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,6 +46,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         setFragmentResultListener("filterKey") { _, bundle ->
             val selectedCategory = bundle.getString("selectedCategory")
             if (selectedCategory != null) {
+                isFilteringByCategory = true
                 applyCategoryFilter(selectedCategory)
             }
         }
@@ -81,6 +83,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun tambahBukuKeKeranjang(buku: Buku) {
+        // CEK STATUS KETERSEDIAAN
+        if (!buku.status.equals("Tersedia", ignoreCase = true)) {
+            Toast.makeText(requireContext(), "Buku ini lagi kosong, coba lain waktu", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val database = AppDatabase.getDatabase(requireContext())
         val cartDao = database.bukuCartDao()
 
@@ -139,6 +147,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
+                if (isFilteringByCategory) return
                 val query = s.toString().trim()
                 handleSearchQuery(query)
             }
@@ -155,6 +164,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         } else {
             binding.btnClearSearchText.visibility = View.VISIBLE
             binding.scrollInitialSearch.visibility = View.GONE
+            binding.btnBackFromSearch.visibility = View.VISIBLE
             filterBooks(query)
         }
     }
@@ -168,6 +178,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         if (filtered.isEmpty()) {
             binding.rvSearchResults.visibility = View.GONE
             binding.tvSearchNoResult.visibility = View.VISIBLE
+            binding.tvSearchNoResult.text = "Tidak ada hasil"
         } else {
             binding.tvSearchNoResult.visibility = View.GONE
             binding.rvSearchResults.visibility = View.VISIBLE
@@ -180,12 +191,20 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.etSearchBox.isEnabled = false
         binding.btnBackFromSearch.visibility = View.VISIBLE
         binding.scrollInitialSearch.visibility = View.GONE
+        binding.btnClearSearchText.visibility = View.GONE
         
-        val filtered = allBooksList.filter { it.tipe == category }
+        // Sembunyikan elemen history secara eksplisit
+        binding.layoutRecentSearch.visibility = View.GONE
+        
+        val filtered = allBooksList.filter { it.tipe?.equals(category, ignoreCase = true) == true }
         
         if (filtered.isEmpty()) {
             binding.rvSearchResults.visibility = View.GONE
             binding.tvSearchNoResult.visibility = View.VISIBLE
+            binding.tvSearchNoResult.text = "buku untuk kategori ini sedang kosong, coba beberapa waktu lagi"
+            
+            // Sembunyikan kembali scrollInitialSearch untuk memastikan tampilan bersih
+            binding.scrollInitialSearch.visibility = View.GONE
         } else {
             binding.tvSearchNoResult.visibility = View.GONE
             binding.rvSearchResults.visibility = View.VISIBLE
@@ -194,11 +213,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun resetSearchState() {
+        isFilteringByCategory = false
         binding.etSearchBox.text.clear()
         binding.etSearchBox.isEnabled = true
         binding.btnBackFromSearch.visibility = View.GONE
         binding.scrollInitialSearch.visibility = View.VISIBLE
         binding.rvSearchResults.visibility = View.GONE
+        binding.tvSearchNoResult.visibility = View.GONE
+        
+        // Tampilkan kembali daftar rekomendasi
+        binding.rvSuggestedBooks.visibility = View.VISIBLE
+        binding.layoutRecentSearch.visibility = if (searchHistory.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun loadSuggestedBooks() {
@@ -262,7 +287,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     
                     binding.shimmerSearch.stopShimmer()
                     binding.shimmerSearch.visibility = View.GONE
-                    binding.scrollInitialSearch.visibility = View.VISIBLE
+                    
+                    // Hanya tampilkan jika sedang tidak mencari/filter
+                    if (!isFilteringByCategory && binding.etSearchBox.text.isEmpty()) {
+                        binding.scrollInitialSearch.visibility = View.VISIBLE
+                    }
                 }
             }
     }
@@ -290,7 +319,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
                 binding.shimmerSearch.stopShimmer()
                 binding.shimmerSearch.visibility = View.GONE
-                binding.scrollInitialSearch.visibility = View.VISIBLE
+                
+                // Hanya tampilkan jika sedang tidak mencari/filter
+                if (!isFilteringByCategory && binding.etSearchBox.text.isEmpty()) {
+                    binding.scrollInitialSearch.visibility = View.VISIBLE
+                }
             }
     }
 

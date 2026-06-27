@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dna.litera.R
 import com.dna.litera.buku.DetailBukuActivity
 import com.dna.litera.data.Buku
 import com.dna.litera.data.local.AppDatabase
@@ -59,6 +60,12 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), com.dna.litera.pinjam.CartActivity::class.java)
             startActivity(intent)
         }
+
+        binding.etSearchHome.setOnClickListener {
+            // Pindah ke tab Search di Bottom Navigation
+            val bottomNav = requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNavigation)
+            bottomNav.selectedItemId = R.id.nav_search
+        }
     }
 
     private fun setupRecyclerViews() {
@@ -90,6 +97,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun tambahBukuKeKeranjang(buku: Buku) {
+        // CEK STATUS KETERSEDIAAN
+        if (!buku.status.equals("Tersedia", ignoreCase = true)) {
+            Toast.makeText(requireContext(), "Buku ini lagi kosong, coba lain waktu", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val database = AppDatabase.getDatabase(requireContext())
         val cartDao = database.bukuCartDao()
 

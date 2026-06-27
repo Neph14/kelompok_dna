@@ -12,6 +12,7 @@ import com.dna.litera.databinding.FragmentFilterBinding
 class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private lateinit var binding: FragmentFilterBinding
+    private var selectedCategory: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,11 +24,18 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
         binding.rgKategoriFilterOptions.setOnCheckedChangeListener { group, checkedId ->
             val radioButton = view.findViewById<RadioButton>(checkedId)
-            val selectedCategory = radioButton.text.toString()
+            selectedCategory = radioButton.text.toString()
             
-            // Kirim hasil filter kembali ke SearchFragment
-            setFragmentResult("filterKey", bundleOf("selectedCategory" to selectedCategory))
-            parentFragmentManager.popBackStack()
+            // Tampilkan tombol ceklis (Apply) jika ada pilihan
+            binding.btnApplyFilter.visibility = View.VISIBLE
+        }
+
+        binding.btnApplyFilter.setOnClickListener {
+            selectedCategory?.let { category ->
+                // Kirim hasil filter kembali ke SearchFragment
+                setFragmentResult("filterKey", bundleOf("selectedCategory" to category))
+                parentFragmentManager.popBackStack()
+            }
         }
     }
 }

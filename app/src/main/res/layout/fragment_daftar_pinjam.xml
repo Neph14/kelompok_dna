@@ -111,6 +111,32 @@
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_buku_keranjang" />
 
+            <!-- State Kosong -->
+            <LinearLayout
+                android:id="@+id/layoutKeranjangKosong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_cart"
+                    app:tint="#D1D1D1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Coba Pinjam Beberapa Buku"
+                    android:textSize="16sp"
+                    android:textColor="#888888"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

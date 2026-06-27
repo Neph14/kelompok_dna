@@ -85,6 +85,12 @@ class DetailBukuActivity : AppCompatActivity() {
     }
 
     private fun tambahBukuKeKeranjangLokal(buku: Buku) {
+        // 1. Cek status ketersediaan buku terlebih dahulu
+        if (!buku.status.equals("Tersedia", ignoreCase = true)) {
+            Toast.makeText(this, "Buku nya lagi kosong, coba lain waktu", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val database = AppDatabase.getDatabase(this)
         val cartDao = database.bukuCartDao()
 

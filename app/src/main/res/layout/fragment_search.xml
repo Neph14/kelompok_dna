@@ -161,6 +161,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:visibility="gone"
+        android:background="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/layoutSearchHeader"
         app:layout_constraintBottom_toBottomOf="parent" />
 

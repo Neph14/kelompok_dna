@@ -160,7 +160,22 @@ class CartActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 // Update adapter dengan data terbaru dari Room
                 cartAdapter.updateData(listKeranjang)
+                updateUI(listKeranjang)
             }
+        }
+    }
+
+    private fun updateUI(list: List<BukuCart>) {
+        binding.tvTotalBukuCart.text = list.size.toString()
+        
+        if (list.isEmpty()) {
+            binding.rvCart.visibility = android.view.View.GONE
+            binding.layoutCartKosong.visibility = android.view.View.VISIBLE
+            binding.cardBottomSection.visibility = android.view.View.GONE
+        } else {
+            binding.rvCart.visibility = android.view.View.VISIBLE
+            binding.layoutCartKosong.visibility = android.view.View.GONE
+            binding.cardBottomSection.visibility = android.view.View.VISIBLE
         }
     }
 
@@ -170,6 +185,7 @@ class CartActivity : AppCompatActivity() {
             val listTerbaru = cartDao.ambilSemuaKeranjang()
             withContext(Dispatchers.Main) {
                 cartAdapter.updateData(listTerbaru)
+                updateUI(listTerbaru)
                 Toast.makeText(this@CartActivity, "${buku.judul} dihapus dari keranjang", Toast.LENGTH_SHORT).show()
             }
         }
